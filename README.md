@@ -1,6 +1,7 @@
 ## topcoder-dl :bookmark:
-###### Downloads Topcoder data-science tutorials and save as PDF
+###### Downloads all Topcoder data-science tutorials and save as PDF
 
+Inspired from this awesome stuff called [Youtube-dl](https://github.com/rg3/youtube-dl)
 
 ### Installation
 
