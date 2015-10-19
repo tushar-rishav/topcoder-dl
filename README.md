@@ -41,7 +41,7 @@ Note: If the directory do not exists then topcoder-dl will create a new one else
 
 ##### Get help
 ```sh
-balert -h
+topcoderdl -h
 ```
 ##### Example
 ```sh

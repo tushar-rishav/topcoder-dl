@@ -60,7 +60,7 @@ Get help
 
 .. code:: sh
 
-    balert -h
+    topcoderdl -h
 
 Example
 '''''''
