@@ -9,14 +9,14 @@ extra = {}
 if sys.version_info >= (3,):
     extra['use_2to3'] = True
 setup(name='topcoder-dl',
-      version='0.0.1',
+      version='0.0.2',
       install_requires=[
           r for r in open('requirements.txt', 'r').read().split('\n') if r],
       author='Tushar Gautam',
       author_email='tushar.rishav@gmail.com',
       packages=['TopcoderDl', ],
       entry_points={
-          'console_scripts': ['TopcoderDl=TopcoderDl:main'],
+          'console_scripts': ['topcoderdl=TopcoderDl:main'],
       },
       license='GNU General Public License v3 (GPLv3)',
       url='https://github.com/tushar-rishav/topcoder-dl/',

@@ -1,12 +1,14 @@
-__author__ = 'tushar-rishav'
-__version__ = "0.0.1"
-
-from multiprocessing.dummy import Pool as ThreadPool
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
+from setproctitle import setproctitle
 import os
 import urllib2
 import subprocess
 import argparse
+import sys
+
+__author__ = 'tushar-rishav'
+__version__ = "0.0.2"
 
 
 class TopCoder:
@@ -15,6 +17,7 @@ class TopCoder:
         self.base_url = "https://www.topcoder.com/community/data-science/data-science-tutorials/"
         self.target_dir = "TopcoderPdf"
         self.flag = False
+        setproctitle('topcoderdl')
 
     def fetch(self):
         try:
@@ -26,18 +29,19 @@ class TopCoder:
         self.data = BeautifulSoup(self.page.read(), "lxml")
         if not self.flag:
             table = self.data.findAll("table")[0]
-            all_a = table.findAll("a")  # hyperlink containing author + post
+            all_a = table.findAll("a")
             member_a = table.findAll("a", class_="tc_coder coder")
             all_set = set(all_a)
             member_set = set(member_a)
-            # throw away member links
             post = list(set(all_set).difference(member_set))
         else:
             post = [self.base_url]
-        pool = ThreadPool(4)
-        __ = pool.map(self.download, post)
-        pool.close()
-        pool.join()
+
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            future_to_url = {
+                executor.submit(self.download, url): url for url in post}
+            for future in as_completed(future_to_url):
+                url = future_to_url[future]
 
     def download(self, url):
 
@@ -73,8 +77,8 @@ class Smarty(TopCoder):
 @Smarty(None)
 def parse():
     parser = argparse.ArgumentParser(description=" \
-			 Downloads Topcoder algorithm tutorials and save as PDF", epilog="\
-			 Author:https://github.com/tushar-rishav")
+             Downloads Topcoder algorithm tutorials and save as PDF", epilog="\
+             Author:https://github.com/tushar-rishav")
     parser.add_argument("-t", "--target", help="absolute path of target directory to save all PDFs. Default is TopcoderPdf in current dir",
                         type=str)
     parser.add_argument("-p", "--post", help="link for single post",
