@@ -88,6 +88,9 @@ def parse():
 
 
 def main():
+    location_f = subprocess.Popen("whereis \
+        wkhtmltopdf", shell=True, stdout=subprocess.PIPE).stdout.read()
+    assert "wkhtmltopdf" in location_f, "wkhtmltopdf is not installed. Download from www.wkhtmltopdf.org/downloads.html and try again "
 
     obj = TopCoder()
     parse(obj)
